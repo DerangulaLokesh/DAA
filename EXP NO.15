@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <math.h>
+
+#define MAX_SIZE 2
+
+void add_matrices(int A[][MAX_SIZE], int B[][MAX_SIZE], int C[][MAX_SIZE]) {
+    for (int i = 0; i < MAX_SIZE; i++) {
+        for (int j = 0; j < MAX_SIZE; j++) {
+            C[i][j] = A[i][j] + B[i][j];
+        }
+    }
+}
+
+void subtract_matrices(int A[][MAX_SIZE], int B[][MAX_SIZE], int C[][MAX_SIZE]) {
+    for (int i = 0; i < MAX_SIZE; i++) {
+        for (int j = 0; j < MAX_SIZE; j++) {
+            C[i][j] = A[i][j] - B[i][j];
+        }
+    }
+}
+
+void strassen_multiply(int A[][MAX_SIZE], int B[][MAX_SIZE], int C[][MAX_SIZE]) {
+    if (MAX_SIZE == 1) {
+        C[0][0] = A[0][0] * B[0][0];
+    } else {
+        int A11[MAX_SIZE/2][MAX_SIZE/2];
+        int A12[MAX_SIZE/2][MAX_SIZE/2];
+        int A21[MAX_SIZE/2][MAX_SIZE/2];
+        int A22[MAX_SIZE/2][MAX_SIZE/2];
+        int B11[MAX_SIZE/2][MAX_SIZE/2];
+        int B12[MAX_SIZE/2][MAX_SIZE/2];
+        int B21[MAX_SIZE/2][MAX_SIZE/2];
+        int B22[MAX_SIZE/2][MAX_SIZE/2];
+        int C11[MAX_SIZE/2][MAX_SIZE/2];
+        int C12[MAX_SIZE/2][MAX_SIZE/2];
+        int C21[MAX_SIZE/2][MAX_SIZE/2];
+        int C22[MAX_SIZE/2][MAX_SIZE/2];
+        int P1[MAX_SIZE/2][MAX_SIZE/2];
+        int P2[MAX_SIZE/2][MAX_SIZE/2];
+        int P3[MAX_SIZE/2][MAX_SIZE/2];
+        int P4[MAX_SIZE/2][MAX_SIZE/2];
+        int P5[MAX_SIZE/2][MAX_SIZE/2];
+        int P6[MAX_SIZE/2][MAX_SIZE/2];
+        int P7[MAX_SIZE/2][MAX_SIZE/2];
+        int temp1[MAX_SIZE/2][MAX_SIZE/2];
+        int temp2[MAX_SIZE/2][MAX_SIZE/2];
+
+        for (int i = 0; i < MAX_SIZE/2; i++) {
+            for (int j = 0; j < MAX_SIZE/2; j++) {
+                A11[i][j] = A[i][j];
+                A12[i][j] = A[i][j
