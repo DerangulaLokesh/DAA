@@ -1,0 +1,56 @@
+#include <stdio.h>
+#define MAX_SIZE 100
+
+void multiplyMatrix(int a[][MAX_SIZE], int b[][MAX_SIZE], int result[][MAX_SIZE], int rowsA, int columnsA, int columnsB) {
+  int i, j, k;
+  for (i = 0; i < rowsA; i++) {
+    for (j = 0; j < columnsB; j++) {
+      result[i][j] = 0;
+      for (k = 0; k < columnsA; k++) {
+        result[i][j] += a[i][k] * b[k][j];
+      }
+    }
+  }
+}
+
+int main() {
+  int a[MAX_SIZE][MAX_SIZE];
+  int b[MAX_SIZE][MAX_SIZE];
+  int result[MAX_SIZE][MAX_SIZE];
+  int rowsA, columnsA, rowsB, columnsB, i, j;
+  
+  printf("Enter the number of rows and columns for matrix A: ");
+  scanf("%d%d", &rowsA, &columnsA);
+  printf("Enter the elements of matrix A: \n");
+  for (i = 0; i < rowsA; i++) {
+    for (j = 0; j < columnsA; j++) {
+      scanf("%d", &a[i][j]);
+    }
+  }
+  
+  printf("Enter the number of rows and columns for matrix B: ");
+  scanf("%d%d", &rowsB, &columnsB);
+  printf("Enter the elements of matrix B: \n");
+  for (i = 0; i < rowsB; i++) {
+    for (j = 0; j < columnsB; j++) {
+      scanf("%d", &b[i][j]);
+    }
+  }
+  
+  if (columnsA != rowsB) {
+    printf("The two matrices can't be multiplied.\n");
+    return 0;
+  }
+  
+  multiplyMatrix(a, b, result, rowsA, columnsA, columnsB);
+  
+  printf("The result of multiplying the two matrices is: \n");
+  for (i = 0; i < rowsA; i++) {
+    for (j = 0; j < columnsB; j++) {
+      printf("%d ", result[i][j]);
+    }
+    printf("\n");
+  }
+  
+  return 0;
+}
