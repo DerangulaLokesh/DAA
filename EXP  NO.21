@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 100
+
+int n, keys[MAX], freq[MAX];
+int lookup[MAX][MAX];
+
+int optimal_bst(int i, int j) {
+  if (lookup[i][j] != -1) {
+    return lookup[i][j];
+  }
+  if (j < i) {
+    lookup[i][j] = 0;
+  } else if (j == i) {
+    lookup[i][j] = freq[i];
+  } else {
+    int sum = 0, k;
+    for (k = i; k <= j; k++) {
+      sum += freq[k];
+    }
+    int min = INT_MAX, left_sum, right_sum;
+    for (k = i; k <= j; k++) {
+      left_sum = optimal_bst(i, k - 1);
+      right_sum = optimal_bst(k + 1, j);
+      if (min > left_sum + right_sum) {
+        min = left_sum + right_sum;
+      }
+    }
+    lookup[i][j] = min + sum;
+  }
+  return lookup[i][j];
+}
+
+int main() {
+  int i, j;
+  printf("Enter the number of keys: ");
+  scanf("%d", &n);
+  printf("Enter the keys and their frequencies:\n");
+  for (i = 0; i < n; i++) {
+    scanf("%d%d", &keys[i], &freq[i]);
+  }
+  for (i = 0; i < n; i++) {
+    for (j = 0; j < n; j++) {
+      lookup[i][j] = -1;
+    }
+  }
+  int cost = optimal_bst(0, n - 1);
+  printf("The cost of the optimal binary search tree is: %d\n", cost);
+  return 0;
+}
