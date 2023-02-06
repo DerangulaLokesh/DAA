@@ -1,0 +1,74 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct edge {
+  int src, dest, weight;
+} edge;
+
+typedef struct set {
+  int parent, rank;
+} set;
+
+int find(set* sets, int i) {
+  if (sets[i].parent != i) {
+    sets[i].parent = find(sets, sets[i].parent);
+  }
+  return sets[i].parent;
+}
+
+void union_sets(set* sets, int x, int y) {
+  int root1 = find(sets, x);
+  int root2 = find(sets, y);
+  if (root1 != root2) {
+    if (sets[root1].rank < sets[root2].rank) {
+      sets[root1].parent = root2;
+    } else if (sets[root1].rank > sets[root2].rank) {
+      sets[root2].parent = root1;
+    } else {
+      sets[root2].parent = root1;
+      sets[root1].rank++;
+    }
+  }
+}
+
+int compare(const void* a, const void* b) {
+  return ((edge*)a)->weight - ((edge*)b)->weight;
+}
+
+void kruskal(edge* edges, int n, int e) {
+  int i, count, x, y;
+  set* sets = (set*) malloc(n * sizeof(set));
+  for (i = 0; i < n; i++) {
+    sets[i].parent = i;
+    sets[i].rank = 0;
+  }
+  qsort(edges, e, sizeof(edge), compare);
+  count = 0;
+  for (i = 0; i < e; i++) {
+    x = find(sets, edges[i].src);
+    y = find(sets, edges[i].dest);
+    if (x != y) {
+      printf("Edge %d: (%d, %d) with weight %d\n", i, edges[i].src, edges[i].dest, edges[i].weight);
+      count++;
+      union_sets(sets, x, y);
+    }
+    if (count == n - 1) {
+      break;
+    }
+  }
+  free(sets);
+}
+
+int main() {
+  int n, e, i;
+  edge edges[100];
+  printf("Enter the number of nodes and edges: ");
+  scanf("%d%d", &n, &e);
+  printf("Enter the source, destination, and weight of each edge:\n");
+  for (i = 0; i < e; i++) {
+    scanf("%d%d%d", &edges[i].src, &edges[i].dest, &edges[i].weight);
+  }
+  printf("The minimum spanning tree:\n");
+  kruskal(edges, n, e);
+  return 0;
+}
