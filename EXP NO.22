@@ -1,0 +1,32 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 100
+
+int lookup[MAX][MAX];
+
+int binomial_coefficient(int n, int k) {
+  if (lookup[n][k] != -1) {
+    return lookup[n][k];
+  }
+  if (k == 0 || k == n) {
+    lookup[n][k] = 1;
+  } else {
+    lookup[n][k] = binomial_coefficient(n - 1, k - 1) + binomial_coefficient(n - 1, k);
+  }
+  return lookup[n][k];
+}
+
+int main() {
+  int n, k, i, j;
+  printf("Enter the values of n and k:\n");
+  scanf("%d%d", &n, &k);
+  for (i = 0; i < MAX; i++) {
+    for (j = 0; j < MAX; j++) {
+      lookup[i][j] = -1;
+    }
+  }
+  int coef = binomial_coefficient(n, k);
+  printf("The binomial coefficient of %d and %d is: %d\n", n, k, coef);
+  return 0;
+}
