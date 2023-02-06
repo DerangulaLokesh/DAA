@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct item {
+  int weight;
+  int value;
+} item;
+
+int compare(const void* a, const void* b) {
+  double r = ((item*)b)->value / ((item*)b)->weight - ((item*)a)->value / ((item*)a)->weight;
+  return r > 0 ? 1 : r < 0 ? -1 : 0;
+}
+
+double fractional_knapsack(item* items, int n, int w) {
+  int i;
+  double value = 0;
+  qsort(items, n, sizeof(item), compare);
+  for (i = 0; i < n && w > 0; i++) {
+    if (items[i].weight <= w) {
+      value += items[i].value;
+      w -= items[i].weight;
+    } else {
+      value += items[i].value * ((double)w / items[i].weight);
+      break;
+    }
+  }
+  return value;
+}
+
+int main() {
+  int n, w, i;
+  item items[100];
+  printf("Enter the number of items: ");
+  scanf("%d", &n);
+  printf("Enter the weight and value of each item:\n");
+  for (i = 0; i < n; i++) {
+    scanf("%d%d", &items[i].weight, &items[i].value);
+  }
+  printf("Enter the maximum weight: ");
+  scanf("%d", &w);
+  printf("The maximum value of the knapsack is %lf\n", fractional_knapsack(items, n, w));
+  return 0;
+}
